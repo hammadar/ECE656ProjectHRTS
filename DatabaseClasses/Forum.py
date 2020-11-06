@@ -61,19 +61,75 @@ class Forum(DataBaseObject):
         return False
 
     def getThreads(self, cnx: mysql.connector.connect()):
-        pass
+        cursor = cnx.cursor()
+        threads = []
+        query = ("SELECT thread_id FROM threads "
+                 f"WHERE forum_id = {self.forum_id}")
+        cursor.execute(query)
+        for (thread_id) in cursor:
+            threads.append(thread_id)
+        return threads
 
     def getContributors(self, cnx: mysql.connector.connect()):
-        pass
+        cursor = cnx.cursor()
+        contributors = []
+        query = ("SELECT contributor_id FROM contributors "
+                 f"WHERE forum_id = {self.forum_id}")
+        cursor.execute(query)
+        for (contributor_id) in cursor:
+            contributors.append(contributor_id)
+        return contributors
 
     def getPosts(self, cnx: mysql.connector.connect()):
-        pass
+        cursor = cnx.cursor()
+        posts = []
+        for (thread_id) in self.threads:
+            query = ("SELECT post_id FROM posts "
+                     f"WHERE thread_id = {thread_id} "
+                     f"AND user_id = {self.user_id}")
+            cursor.execute(query)
+            for (post_id) in cursor:
+                posts.append(post_id)
+        return posts
 
     def updateThreads(self, additionalThreads, cnx: mysql.connector.connect()):
-        pass
+        cursor = cnx.cursor()
+        queries = []
+        for thread in additionalThreads:
+            addToQuery = f"({thread}, {self.forum_id})"
+            queries.append(addToQuery)
+        query = "INSERT INTO threads" "(thread_id, forum_id) " "VALUES "
+        for i in range(len(queries)):
+            if i == len(queries) - 1:
+                query += queries[i]
+            else:
+                query += queries[i] + ", "
+        cursor.execute(query)
 
     def updateContributors(self, additionalContributors, cnx:mysql.connector.connect()):
-        pass
+        cursor = cnx.cursor()
+        queries = []
+        for contributor in additionalContributors:
+            addToQuery = f"({self.forum_id}, {contributor})"
+            queries.append(addToQuery)
+        query = "INSERT INTO contributors" "(forum_id, contributor_id) " "VALUES "
+        for i in range(len(queries)):
+            if i == len(queries) - 1:
+                query += queries[i]
+            else:
+                query += queries[i] + ", "
+        cursor.execute(query)
 
     def updatePosts(self, additionalPosts, cnx:mysql.connector.connect()):
-        pass
+        cursor = cnx.cursor()
+        queries = []
+        for post in additionalPosts:
+            addToQuery = f"({post}, {self.thread_id}, {self.user_id}, "test")"
+            queries.append(addToQuery)
+        query = "INSERT INTO contributors" "(post_id, thread_id, user_id, post) " "VALUES "
+        for i in range(len(queries)):
+            if i == len(queries) - 1:
+                query += queries[i]
+            else:
+                query += queries[i] + ", "
+        cursor.execute(query)
