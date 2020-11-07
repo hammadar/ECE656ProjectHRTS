@@ -19,7 +19,7 @@ class User:
         else:
             self.friends = [friendID]
 
-    def updateDatabase(self, user, password):
+    def updateUserInDatabase(self, user, password):
         cnx = mysql.connector.connect(user=user, password=password, host="35.203.5.18", database="ece656project")
         cursor = cnx.cursor()
         #update_text = ""
@@ -30,5 +30,17 @@ class User:
         last_name = self.lastName
         birth_date = self.birthDate
         cursor.execute(update_user, (first_name, last_name, birth_date))
+        cursor.close()
+        cnx.close()
+
+    def createUserInDatabase(self, user, password):
+        cnx = mysql.connector.connect(user=user, password=password, host="35.203.5.18", database="ece656project")
+        cursor = cnx.cursor()
+        add_user = ("INSERT INTO users "
+                    "(user_id, first_name, last_name, birth_date)"
+                    "VALUES (%s, %s, %s, %s)")
+        data_user = (self.userID, self.firstName, self.lastName, self.birthDate)
+        cursor.execute(add_user, data_user)
+        cnx.commit()
         cursor.close()
         cnx.close()
