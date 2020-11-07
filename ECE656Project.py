@@ -9,10 +9,7 @@ def getDatabaseConnection(ipaddress, usr, passwd, charset, curtype): #obtained f
     return sqlCon
 
 
-def createUser(cursor, userName, password,
-               querynum=0,
-               updatenum=0,
-               connection_num=0):
+def createUser(cursor, userName, password):
     try:
         sqlCreateUser = "CREATE USER '%s'@'localhost' IDENTIFIED BY '%s';" % (userName, password)
         cursor.execute(sqlCreateUser)
