@@ -57,6 +57,7 @@ class User(DataBaseObject):
         for (userID) in cursor:
             if userID:
                 return True
+        return False
 
     def getFriends(self, cnx: mysql.connector.connect()):
         cursor = cnx.cursor()
@@ -74,7 +75,7 @@ class User(DataBaseObject):
         for friend in additionalFriends:
             addToQuery = f"({self.userID}, {friend})"
             queries.append(addToQuery)
-        query = "INSERT INTO connections" "(user_id, friend_id)" "VALUES "
+        query = "INSERT INTO connections" "(user_id, friend_id) " "VALUES "
         for i in range(len(queries)):
             if i == len(queries) - 1:
                 query += queries[i]
