@@ -17,7 +17,7 @@ class Forum(DataBaseObject):
     def updateInDatabase(self, cnx: mysql.connector.connect()): #what about removals?
         cursor = cnx.cursor()
         update_user = ("UPDATE forum "
-                       "SET forum_id = %s, titleID = %s"
+                       "SET forum_id = %s, titleID = %s "
                        f"WHERE forum_id = {self.forum_id}")
         cursor.execute(update_user, (self.forum_id, self.title_id))
         cursor.close()
@@ -124,7 +124,7 @@ class Forum(DataBaseObject):
         cursor = cnx.cursor()
         queries = []
         for post in additionalPosts:
-            addToQuery = f"({post}, {self.thread_id}, {self.user_id}, "test")"
+            addToQuery = f"({post.post_id}, {post.thread_id}, {post.user_id}, {post.post})"
             queries.append(addToQuery)
         query = "INSERT INTO contributors" "(post_id, thread_id, user_id, post) " "VALUES "
         for i in range(len(queries)):
